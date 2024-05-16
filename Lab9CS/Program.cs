@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 class Car
@@ -20,11 +20,13 @@ class Garage
         cars.Add(car);
     }
 
-    public void WashAllCars(Washer washer)
+    public delegate void WashCarDelegate(Car car);
+
+    public void WashAllCars(WashCarDelegate washDelegate)
     {
         foreach (Car car in cars)
         {
-            washer.Wash(car);
+            washDelegate(car);
         }
     }
 }
@@ -49,6 +51,7 @@ class Program
         garage.AddCar(car2);
 
         Washer washer = new Washer();
-        garage.WashAllCars(washer);
+        Garage.WashCarDelegate washDelegate = new Garage.WashCarDelegate(washer.Wash);
+        garage.WashAllCars(washDelegate);
     }
 }
